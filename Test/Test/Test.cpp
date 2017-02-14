@@ -10,6 +10,7 @@ int main()
 	printf("Hello");
 	scanf_s("%d", &a);
 	printf("HelloTest2");
+	printf("TestBranch");
     return 0;
 }
 
