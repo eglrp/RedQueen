@@ -1,5 +1,8 @@
-
 # [【Mysql】从删库到跑路（全20讲）](https://www.bilibili.com/video/av5354244/?from=search&seid=16355277560660555238)的前5讲笔记：
+
+## [Windows下使用DOS命令进入MySQL数据库](http://jingyan.baidu.com/article/3aed632e19b5e8701080918f.html)
+
+## [如何安装MySQL，MySQL两种安装方式](http://jingyan.baidu.com/article/cd4c2979033a17756f6e6047.html)
 
 ## 字符串类型：
 
