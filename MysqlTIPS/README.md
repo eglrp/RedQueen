@@ -2,6 +2,9 @@
 
 ## [Windows下使用DOS命令进入MySQL数据库](http://jingyan.baidu.com/article/3aed632e19b5e8701080918f.html)
 
+- 启动mysql数据库：在出来的DOS命令窗口中输入 net start mysql
+- 在DOS命令窗口输入 mysql -hlocalhost -uroot -p回车。进入mysql数据库如：-p123456，用户没有设置密码，显示Enter password时，直接回车即可。
+
 ## [如何安装MySQL，MySQL两种安装方式](http://jingyan.baidu.com/article/cd4c2979033a17756f6e6047.html)
 
 ## 字符串类型：
