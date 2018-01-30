@@ -119,3 +119,112 @@ unsigned int a= 0x1234的32位完全表示是0x00001234，在大端（低地址�
 则&a的值为0x4000， char占一个字节，即b最终所取的值为0x4000地址内存储的内容，故为0x00。
 
 若处理器为小端 （低地址存储低位） 模式，则b的值为0x34。
+
+//将源字符串加const，表明其为输入参数，加2分
+//对源地址和目的地址加非0断言，加3分
+//为了实现链式操作，将目的地址返回，加3分！ 
+char * strcpy( char *strDest, const char *strSrc ) 
+{
+ assert( (strDest != NULL) && (strSrc != NULL) );
+ char *address = strDest; 
+ while( (*strDest++ = * strSrc++) != ‘\0’ ); 
+ return address;
+}
+
+野指针指向一个已删除的对象或未申请访问受限内存区域的指针。与空指针不同，野指针无法通过简单地判断是否为 NULL避免，而只能通过养成良好的编程习惯来尽力减少。对野指针进行操作很容易造成程序错误。
+
+写一个“标准”宏MIN，这个宏输入两个参数并返回较小的一个。另外，当你写下面的代码时会发生什么事？   
+least = MIN(* p++, b);  
+
+((*p++) <= (b) ? (* p++) : (b))   
+这个表达式会产生副作用，指针p会作2次++自增操作。  
+
+```
+编写类String的构造函数、析构函数和赋值函数，已知类String的原型为：
+class String
+{ 
+ public: 
+ String(const char *str = NULL); // 普通构造函数 
+ String(const String &other); // 拷贝构造函数 
+ ~ String(void); // 析构函数 
+ String & operator =(const String &other); // 赋值函数 
+ private: 
+ char *m_data; // 用于保存字符串 
+};
+
+//普通构造函数
+String::String(const char* str)
+{
+	if(str==nullptr)//point
+	{
+		m_data = new char[1];//point:对空字符串自动申请存放结束标志'\0'的空
+		*m_data = '\0';
+	}
+	else
+	{
+		int length = strlen(str);
+		m_data = new char[length + 1];
+		strcpy(m_data, str);
+	}
+}
+
+//String的析构函数
+String::~String(void)
+{
+	delete[] m_data;
+}
+
+//拷贝构造函数
+String::String(const String &other)//point:输入参数为const
+{
+	int length = strlen(other.m_data);
+	m_data = new char[length+1];
+	strcpy(m_data, other.m_data);
+}
+
+//复值函数
+String & String::operator = (const String &other)//point:输入参数为const
+{
+	if(this == &other)	//得分点：检查自赋值
+		return *this;
+	delete[] m_data;	//得分点：释放原有的内存资源
+	int length = strlen(other.m_data);
+	m_data = new char[length + 1];
+	strcpy(m_data, other.m_data);
+	return *this;
+}
+
+剖析  
+在这个类中包括了指针类成员变量m_data，当类中包括指针类成员变量时，一定要重载其拷贝构造函数、赋值函数和析构函数，这既是对C++程序员的基本要求，也是《Effective　C++》中特别强调的条款。 
+仔细学习这个类，特别注意加注释的得分点和加分点的意义，这样就具备了60%以上的C++基本功！
+```
+
+请说出static和const关键字尽可能多的作用
+static关键字至少有下列n个作用：
+- 函数体内static变量的作用范围为该函数体，不同于auto变量，该变量的内存只被分配一次，因此其值在下次调用时仍维持上次的值； 
+- 在模块内的static全局变量可以被模块内所用函数访问，但不能被模块外其它函数访问；
+- 在模块内的static函数只可被这一模块内的其它函数调用，这个函数的使用范围被限制在声明它的模块内；
+- 在类中的static成员变量属于整个类所拥有，对类的所有对象只有一份拷贝；   
+- 在类中的static成员函数属于整个类所拥有，这个函数不接收this指针，因而只能访问类的static成员变量。
+const关键字至少有下列n个作用：   
+- 欲阻止一个变量被改变，可以使用const关键字。在定义该const变量时，通常需要对它进行初始化，因为以后就没有机会再去改变它了； 
+- 对指针来说，可以指定指针本身为const，也可以指定指针所指的数据为const，或二者同时指定为const；   
+- 在一个函数声明中，const可以修饰形参，表明它是一个输入参数，在函数内部不能改变其值； 
+- 对于类的成员函数，若指定其为const类型，则表明其是一个常函数，不能修改类的 成员变量；
+- 对于类的成员函数，有时候必须指定其返回值为const类型，以使得其返回值不为“左值”。例如：   
+const classA operator*(const classA& a1,const classA& a2);   
+operator * 的返回结果必须是一个const对象。如果不是，这样的变态代码也不会编译出错：   
+classA a, b, c;   
+(a * b) = c; // 对a*b的结果赋值   
+操作(a * b) = c显然不符合编程者的初衷，也没有任何意义。   
+
+链接：https://www.nowcoder.com/questionTerminal/9fb652d48bee45bcb47771b2e3c6f690
+来源：牛客网
+
+C++告诉我们在回收用 new 分配的单个对象的内存空间的时候用 delete，回收用 new[] 分配的一组对象的内存空间的时候用 delete[]。 
+关于 new[] 和 delete[]，其中又分为两种情况：(1) 为基本数据类型分配和回收空间；(2) 为自定义类型分配和回收空间。
+基本类型的对象没有析构函数，所以回收基本类型组成的数组空间用 delete 和 delete[] 都是应该可以的；但是对于类对象数组，只能用 delete[]。
+   所以一个简单的使用原则就是：new 和 delete、new[] 和 delete[] 对应使用。
+
+
+
