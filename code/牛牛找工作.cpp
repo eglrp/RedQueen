@@ -45,29 +45,40 @@ using namespace std;
 map<int,int> mp;
 int cnt = 0;
 int ans[200005];
-int d[100005], p[100005];
-int val[200005];
-int a[100005];
+int d[100005], p[100005];	
+int val[200005];			
+int a[100005];				//答案这里是全局变量，所以自动初始化为0。
+
 int main() {
     int n, m;
     scanf("%d%d", &n, &m);
+
     for(int i = 1; i <= n; i++) {
         scanf("%d%d", &d[i], &p[i]);
-        val[i] = d[i];
+        val[i] = d[i];		//难度值和能力值的总和，这里是难度值
     }
     for(int i = 1; i <= m; i++) {
         scanf("%d", &a[i]);
-        val[i + n] = a[i];
+        val[i + n] = a[i];	//难度值和能力值的总和，这里是能力值
     }
-    sort(val + 1, val + 1 + n + m);
+
+    sort(val + 1, val + 1 + n + m);		//将难度值和能力值排序
+
+	//建立好一个二叉树，按照难度值和能力值从大到小的排列，这里可能有重复的
     for(int i = 1; i <= n + m; i++) {
         if(val[i] != val[i - 1]) {
             cnt++;
             mp[val[i]] = cnt;
         }
     }
-    for(int i = 1; i <= n; i++) ans[mp[d[i]]] = max(ans[mp[d[i]]], p[i]);
-    for(int i = 2; i <= n + m; i++) ans[i] = max(ans[i], ans[i - 1]);
+
+	//将每一项难度相等的工作的最大报酬提取出来
+    for(int i = 1; i <= n; i++) 
+		ans[mp[d[i]]] = max(ans[mp[d[i]]], p[i]);
+	//然后再按i从小到大的顺序维护难度(能力值)不超过i的最大报酬
+    for(int i = 2; i <= n + m; i++) 
+		ans[i] = max(ans[i], ans[i - 1]);
+	//输出结果
     for(int i = 1; i <= m; i++)
         printf("%d\n", ans[mp[a[i]]]);
     return 0;
