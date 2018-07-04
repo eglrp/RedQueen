@@ -35,9 +35,6 @@ O((N+M)*log(N+M))
  * 
  */
 
-作者：NotDeep
-链接：https://www.nowcoder.com/discuss/70736
-来源：牛客网
 
 #include <bits/stdc++.h>
 using namespace std;
