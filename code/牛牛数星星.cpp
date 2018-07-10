@@ -36,5 +36,29 @@ int x,y;
 int a1,b1,a2,b2;
  
 int main(){
-    
+	memset(num,0,sizeof(num));
+	memset(mp,0,sizeof(mp));
+    cin>>n;
+    for (int i = 0; i < n; ++i)
+    {
+    	cin>>x>>y;
+    	mp[x][y]++;
+    }
+
+    for (int i = 0; i < maxn; ++i)
+    {
+    	for (int j = 0; j < maxn; ++j)
+    	{
+    		num[i][j] = num[i-1][j] + num[i][j-1] + mp[i][j] -num[i-1][j-1];
+    	}
+    }
+
+    cin>>m;
+    for (int i = 0; i < m; ++i)
+    {
+    	cin>>a1>>b1>>a2>>b2;
+    	cout<<(num[a2][b2]-num[a1-1][b2]-num[a2][b1-1]+num[a1-1][b1-1])<<endl;
+    }
+
+    return 0;
 }
