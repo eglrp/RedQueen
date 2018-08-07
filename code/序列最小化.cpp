@@ -25,8 +25,6 @@ int main()
 	cin >> n >>k;
 	for(int i = 1; i <= n; i++)
 		cin>>a[i];
-	if(k >= n)
-		cout << "1"<<endl;
 	int location = -1;
 	for(int i = 1; i <= n; i++)
 	{
